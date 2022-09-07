@@ -1,5 +1,9 @@
 # Buffer Overflow
 
+### Video (watch after reading)
+
+https://youtu.be/oS2O75H57qU
+
 ### Overview
 
 One of the simplest "pwn" attacks is a buffer overflow. The idea is that a faulty program has allocated a buffer of a certain size, but allows you to write more than that size.
@@ -18,6 +22,8 @@ Okay wait up. There are others who can explain the stack way better than I, chec
 
 Philosophical sidetrack - It is okay if things are confusing at this point, that is a lot of security. Just let it settle in and come back to it a little bit every day.
 
+### Attacking
+
 Let's extract out what is important. This is what is stored on a stack frame:
 
 - Local variables
@@ -31,3 +37,5 @@ The return address is also on the stack. What does that mean? Well a function ha
 Right now a bell should be going off, look at the diagram again. The stack grows downwards (remember), so we can write past our buffer and overwrite the return address! We can tell the computer where to go next. This is the basic idea of a buffer overflow.
 
 Notice how we attacked. We enumerated every resource that we controlled and figured out how they all interacted with the system. Keep this idea in mind.
+
+### Solution
