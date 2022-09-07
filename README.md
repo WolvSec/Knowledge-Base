@@ -2,7 +2,7 @@
 
 Welcome! Here we will store many links and tutorials for getting started with security.
 
-Most information will be stored on the Wiki [here](../../Wiki)
+Most information will be stored on the Wiki [here](../../wiki)
 
 The contents of the repository will mostly be for examples.
 
