@@ -1,5 +1,5 @@
-#include <stdio.h> // for puts and gets
-#include <unistd.h>
+#include <stdio.h> // For puts and fgets
+#include <unistd.h> // For execve
 
 void access_vault() {
   puts("Access granted");
