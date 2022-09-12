@@ -39,3 +39,5 @@ Right now a bell should be going off, look at the diagram again. The stack grows
 Notice how we attacked. We enumerated every resource that we controlled and figured out how they all interacted with the system. Keep this idea in mind.
 
 ### Solution
+
+See [solve.py](./solve.py)
