@@ -1,12 +1,15 @@
-#include <stdio.h> // For puts and fgets
+#include <stdio.h>  // For puts and fgets
 #include <unistd.h> // For execve
+#include <stdlib.h>
 
-void access_vault() {
+void access_vault()
+{
   puts("Access granted");
   execve("/bin/sh", NULL, NULL);
 }
 
-int main() {
+int main()
+{
   char input_buffer[16];
   puts("Enter the password to access Santa Ono's secret vault:");
 
@@ -14,5 +17,5 @@ int main() {
 
   puts("HAHA you thought! There was no password, you can NEVER get in >:)");
 
-  return 0;
+  return EXIT_SUCCESS;
 }
