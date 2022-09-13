@@ -1,7 +1,7 @@
 CXX=g++
 CFLAGS=-I.
 
-baby_rev: baby_rev.c
+baby_rev: baby_rev.cpp
 	$(CXX) -o baby_rev baby_rev.cpp
 
 clean:

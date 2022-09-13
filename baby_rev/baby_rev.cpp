@@ -1,19 +1,22 @@
 #include <string>
 #include <iostream>
+#include <string_view>
 
-constexpr auto KEY = 42;
+constexpr char KEY = 42;
+constexpr std::string_view PHRASE_CIPHERTEXT = "]I^LQREXu^]CIOuCYuDEEZW";
 
 bool is_phrase_correct(std::string_view phrase)
 {
-  for (char c : phrase)
+  std::string ciphertext{phrase};
+  for (char& c : ciphertext)
   {
-    std::cout << static_cast<char>(c ^ KEY) << std::endl;
+    c ^= KEY;
   }
+  return ciphertext == PHRASE_CIPHERTEXT;
 }
 
 int main()
 {
-
   std::string phrase;
   std::cout << "What's the secret phrase?" << std::endl;
 
