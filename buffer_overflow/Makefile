@@ -6,7 +6,7 @@ CFLAGS=-I.
 # -no-pie: Disables ASLR essentially, loads executable to the same address every time
 # -Wno-stringop-overflow: Disable complaining about fgets overflow
 buffer_overflow: buffer_overflow.c
-	$(CC) -o buffer_overflow buffer_overflow.c -fno-stack-protector -no-pie -Wno-stringop-overflow
+	$(CC) $(CFLAGS) -o buffer_overflow buffer_overflow.c -fno-stack-protector -no-pie -Wno-stringop-overflow
 
 clean:
 	$(RM) buffer_overflow
