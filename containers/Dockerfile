@@ -5,9 +5,10 @@ RUN apt-get update -y
 RUN apt-get install -y apt-transport-https
 
 RUN apt-get install -y \
-    build-essential gdbserver cmake pkg-config \
-    strace curl wget gcc zsh vim gdb git netcat tmux \
-    procps python3 python3-pip python3-dev file binutils sudo locales \
+    build-essential gdb gdbserver cmake pkg-config libc6-dbg nasm libtool-bin clang \
+    procps strace binutils file \
+    unzip curl wget zsh vim git netcat tmux htop ascii xz-utils ripgrep dnsutils \
+    python3 python3-pip python3-dev sudo locales \
     ruby-standalone
 
 RUN gem install one_gadget
