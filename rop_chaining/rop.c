@@ -5,7 +5,6 @@
 void access_vault(int code)
 {
   if (code == 1337) {
-    puts("Access granted");
     execve("/bin/sh", NULL, NULL);
   } else {
     puts("Access denied!");
