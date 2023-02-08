@@ -16,9 +16,7 @@ int main()
   char input_buffer[16];
   puts("Enter the password to access Santa Ono's secret vault:");
 
-  fgets(input_buffer, 32, stdin); // Nothing can go wrong here right?
-
-  puts("HAHA you thought! There was no password, you can NEVER get in >:)");
+  fgets(input_buffer, 64, stdin); // Nothing can go wrong here right?
 
   return EXIT_SUCCESS;
 }

@@ -1,9 +1,8 @@
 CC=gcc
-CFLAGS=-I. -fno-stack-protector -no-pie -Wno-stringop-overflow -Wno-nonnull -static
+CFLAGS=-I. -no-pie -Wno-stringop-overflow -Wno-nonnull -fno-stack-protector
 
-# Statically linked to give more gadgets
-buffer_overflow: rop.c
-	$(CC) $(CFLAGS) -o rop rop.c
+rop_chaining: rop_chaining.c
+	$(CC) $(CFLAGS) -o rop_chaining rop_chaining.c
 
 clean:
-	$(RM) rop
+	$(RM) rop_chaining

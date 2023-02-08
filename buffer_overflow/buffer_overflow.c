@@ -15,7 +15,5 @@ int main()
 
   fgets(input_buffer, 32, stdin); // Nothing can go wrong here right?
 
-  puts("HAHA you thought! There was no password, you can NEVER get in >:)");
-
   return EXIT_SUCCESS;
 }
