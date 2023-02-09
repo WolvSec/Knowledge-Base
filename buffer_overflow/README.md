@@ -8,7 +8,7 @@ https://youtu.be/oS2O75H57qU
 
 One of the simplest "pwn" attacks is a buffer overflow. The idea is that a faulty program has allocated a buffer of a certain size, but allows you to write more than that size.
 
-For example, `input_buffer` is only 16 bytes, but `gets` allows you to input as many characters as you want. So at some point you are writing over memory you are not supposed to, and we can use this to our advantage!
+For example, `input_buffer` is only 16 bytes, but `fgets` is called in a way that allows up to 32 bytes to be read. So at some point you are writing over memory you are not supposed to, and we can use this to our advantage!
 
 ### The Stack
 
