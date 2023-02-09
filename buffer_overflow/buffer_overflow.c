@@ -10,9 +10,9 @@ void access_vault()
 
 void get_password()
 {
-  char input_buffer[16];
   puts("Enter the password to access Santa Ono's secret vault:");
-
+  
+  char input_buffer[16];
   fgets(input_buffer, 64, stdin); // Nothing can go wrong here right?
 }
 

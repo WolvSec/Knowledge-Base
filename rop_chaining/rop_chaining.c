@@ -16,9 +16,9 @@ void access_vault(int code)
 
 int get_password()
 {
-  char input_buffer[16];
   puts("Enter the password to access Santa Ono's secret vault:");
 
+  char input_buffer[16];
   fgets(input_buffer, 64, stdin);
 
   return atoi(input_buffer);
