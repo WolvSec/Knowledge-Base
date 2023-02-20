@@ -22,10 +22,12 @@ Vagrant.configure("2") do |config|
         
         apt-get install -y apt-transport-https
         apt-get install -y \
-            openjdk-11-jdk gcc build-essential gdb cmake pkg-config libc6-dbg nasm libtool-bin clang \
-            unzip curl wget zsh neovim git htop tmux file binutils sudo locales ascii xz-utils ripgrep \
-            strace ltrace netcat procps dnsutils \
-            python3 python3-pip python3-dev
+            openjdk-11-jdk \
+            build-essential gdb gdbserver cmake pkg-config libc6-dbg nasm libtool-bin clang \
+            procps strace binutils file \
+            unzip curl wget zsh vim git netcat tmux htop ascii xz-utils ripgrep dnsutils \
+            python3 python3-pip python3-dev sudo locales \
+            ruby-standalone
 
         apt-get install -y task-gnome-desktop
 
@@ -41,7 +43,7 @@ Vagrant.configure("2") do |config|
         echo source /home/wolvsec/.gdbinit-gef.py >> /home/wolvsec/.gdbinit
 
         ## Install Ghidra static reverse engineering tool
-        wget "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.1.5_build/ghidra_10.1.5_PUBLIC_20220726.zip" -O /tmp/ghidra.zip
+        wget "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.2.3_build/ghidra_10.2.3_PUBLIC_20230208.zip" -O /tmp/ghidra.zip
         unzip /tmp/ghidra.zip -d /opt/ghidra/
         rm -f /tmp/ghidra.zip
         chown -hR wolvsec:wolvsec /opt/ghidra/
@@ -51,19 +53,19 @@ Vagrant.configure("2") do |config|
 Categories=Application;Development;
 Comment[en_US]=Ghidra Software Reverse Engineering Suite
 Comment=Ghidra Software Reverse Engineering Suite
-Exec=/opt/ghidra/ghidra_10.1.5_PUBLIC/ghidraRun
+Exec=/opt/ghidra/ghidra_10.2.3_PUBLIC/ghidraRun
 GenericName[en_US]=Ghidra Software Reverse Engineering Suite
 GenericName=Ghidra Software Reverse Engineering Suite
-Icon=/opt/ghidra/ghidra_10.1.5_PUBLIC/support/ghidra.ico
+Icon=/opt/ghidra/ghidra_10.2.3_PUBLIC/support/ghidra.ico
 MimeType=
-Name[en_US]=Ghidra 10.1.5
-Name=Ghidra 10.1.5
-Path=/opt/ghidra/ghidra_10.1.5_PUBLIC/
+Name[en_US]=Ghidra 10.2.3
+Name=Ghidra 10.2.3
+Path=/opt/ghidra/ghidra_10.2.3_PUBLIC/
 StartupNotify=false
 Terminal=false
 TerminalOptions=
 Type=Application
-Version=1.0
+Version=10.2.3
 X-DBUS-ServiceName=
 X-DBUS-StartupType=none
 X-KDE-SubstituteUID=false
@@ -72,9 +74,9 @@ EOT
 
         # Install IDA
         sudo apt-get install -y libxcb-xinerama0
-        wget "https://out7.hex-rays.com/files/idafree81_linux.run" -O /tmp/idafree_installer.run
+        wget "https://out7.hex-rays.com/files/idafree82_linux.run" -O /tmp/idafree_installer.run
         chmod +x /tmp/idafree_installer.run
-        /tmp/idafree_installer.run --mode unattended --prefix /opt/idafree/idafree-8.1
+        /tmp/idafree_installer.run --mode unattended --prefix /opt/idafree/idafree-8.2
         rm -f /tmp/idafree_installer.run
         chown -hR wolvsec:wolvsec /opt/idafree/
         cat <<EOT >> /usr/share/applications/idafree.desktop
@@ -82,19 +84,19 @@ EOT
 Categories=Application;Development;
 Comment[en_US]=IDA Freeware
 Comment=IDA Freeware
-Exec=/opt/idafree/idafree-8.1/ida64
+Exec=/opt/idafree/idafree-8.2/ida64
 GenericName[en_US]=IDA Freeware
 GenericName=IDA Freeware
-Icon=/opt/idafree/idafree-8.1/appico64.png
+Icon=/opt/idafree/idafree-8.2/appico64.png
 MimeType=
-Name[en_US]=IDA Freeware 8.1
-Name=IDA Freeware 8.1
-Path=/opt/idafree/idafree-8.1/
+Name[en_US]=IDA Freeware 8.2
+Name=IDA Freeware 8.2
+Path=/opt/idafree/idafree-8.2/
 StartupNotify=false
 Terminal=false
 TerminalOptions=
 Type=Application
-Version=1.0
+Version=8.2
 X-DBUS-ServiceName=
 X-DBUS-StartupType=none
 X-KDE-SubstituteUID=false

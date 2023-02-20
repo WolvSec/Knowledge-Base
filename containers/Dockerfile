@@ -26,7 +26,7 @@ USER wolvsec
 
 ENV PATH="${PATH}:/home/wolvsec/.local/bin"
 
-RUN pip3 install pwntools numpy ipython
+RUN pip3 install pwntools numpy ipython z3-solver
 
 RUN bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 
