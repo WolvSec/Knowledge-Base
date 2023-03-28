@@ -1,0 +1,117 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "debian/bullseye64"
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 4096
+        v.cpus = 2
+        v.name = "wolvsec"
+    end
+
+    config.vm.hostname = "wolvsec"
+
+    config.ssh.forward_agent = true
+    config.ssh.forward_x11 = true
+
+    config.vm.provision "shell", inline: <<-SHELL
+        ## Install base packages
+        apt-get update
+        apt-get -y upgrade
+        
+        apt-get install -y apt-transport-https
+        apt-get install -y \
+            openjdk-11-jdk \
+            build-essential gdb gdbserver cmake pkg-config libc6-dbg nasm libtool-bin clang \
+            procps strace binutils file \
+            unzip curl wget zsh vim git netcat tmux htop ascii xz-utils ripgrep dnsutils \
+            python3 python3-pip python3-dev sudo locales \
+            ruby-standalone
+
+        apt-get install -y task-gnome-desktop
+
+        ## Add wolvsec user and give sudo permission
+        useradd --create-home --groups sudo --shell /bin/zsh wolvsec
+        echo "wolvsec:wolvsec" | chpasswd
+        echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+        pip3 install pwntools numpy ipython z3-solver
+        
+        ## Install GEF for better GDB experience
+        wget -O /home/wolvsec/.gdbinit-gef.py -q https://gef.blah.cat/py
+        echo source /home/wolvsec/.gdbinit-gef.py >> /home/wolvsec/.gdbinit
+
+        ## Install Ghidra static reverse engineering tool
+        wget "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.2.3_build/ghidra_10.2.3_PUBLIC_20230208.zip" -O /tmp/ghidra.zip
+        unzip /tmp/ghidra.zip -d /opt/ghidra/
+        rm -f /tmp/ghidra.zip
+        chown -hR wolvsec:wolvsec /opt/ghidra/
+        # Create launcher for desktop
+        cat <<EOT >> /usr/share/applications/ghidra.desktop
+[Desktop Entry]
+Categories=Application;Development;
+Comment[en_US]=Ghidra Software Reverse Engineering Suite
+Comment=Ghidra Software Reverse Engineering Suite
+Exec=/opt/ghidra/ghidra_10.2.3_PUBLIC/ghidraRun
+GenericName[en_US]=Ghidra Software Reverse Engineering Suite
+GenericName=Ghidra Software Reverse Engineering Suite
+Icon=/opt/ghidra/ghidra_10.2.3_PUBLIC/support/ghidra.ico
+MimeType=
+Name[en_US]=Ghidra 10.2.3
+Name=Ghidra 10.2.3
+Path=/opt/ghidra/ghidra_10.2.3_PUBLIC/
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+Version=10.2.3
+X-DBUS-ServiceName=
+X-DBUS-StartupType=none
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+EOT
+
+        # Install IDA
+        sudo apt-get install -y libxcb-xinerama0
+        wget "https://out7.hex-rays.com/files/idafree82_linux.run" -O /tmp/idafree_installer.run
+        chmod +x /tmp/idafree_installer.run
+        /tmp/idafree_installer.run --mode unattended --prefix /opt/idafree/idafree-8.2
+        rm -f /tmp/idafree_installer.run
+        chown -hR wolvsec:wolvsec /opt/idafree/
+        cat <<EOT >> /usr/share/applications/idafree.desktop
+[Desktop Entry]
+Categories=Application;Development;
+Comment[en_US]=IDA Freeware
+Comment=IDA Freeware
+Exec=/opt/idafree/idafree-8.2/ida64
+GenericName[en_US]=IDA Freeware
+GenericName=IDA Freeware
+Icon=/opt/idafree/idafree-8.2/appico64.png
+MimeType=
+Name[en_US]=IDA Freeware 8.2
+Name=IDA Freeware 8.2
+Path=/opt/idafree/idafree-8.2/
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+Version=8.2
+X-DBUS-ServiceName=
+X-DBUS-StartupType=none
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+EOT
+
+        ## Install VSCode
+        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/packages.microsoft.gpg
+        install -D -o root -g root -m 644 /tmp/packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+        sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+        rm -f /tmp/packages.microsoft.gpg
+        apt-get update
+        apt-get install -y code
+
+        # Dark mode :)
+        runuser -l wolvsec -c 'gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark'
+    SHELL
+end
