@@ -6,7 +6,7 @@ RUN apt-get install -y apt-transport-https
 
 RUN apt-get install -y \
     build-essential gdbserver cmake pkg-config \
-    strace curl wget gcc zsh vim gdb git netcat tmux \
+    strace patchelf curl wget gcc zsh vim gdb git netcat tmux \
     procps python3 python3-pip python3-dev file binutils sudo locales \
     ruby-standalone
 
@@ -25,7 +25,7 @@ USER wolvsec
 
 ENV PATH="${PATH}:/home/wolvsec/.local/bin"
 
-RUN pip3 install pwntools numpy ipython z3-solver
+RUN pip3 install pwntools numpy ipython z3-solver angr
 
 RUN bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 
